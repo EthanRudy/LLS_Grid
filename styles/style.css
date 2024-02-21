@@ -1,0 +1,27 @@
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+#map {
+  height: 50%;
+  width: 50%;
+  margin: 0px;
+  padding: 0px;
+}
+
+#panel {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 40%;
+  margin-left: 0px;
+  z-index: 5;
+  background-color: white;
+  padding: 5px;
+}
+
+canvas{
+  display: block;
+}
