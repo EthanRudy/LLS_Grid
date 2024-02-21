@@ -3,6 +3,10 @@ var gridWidth;
 var cellWidth;
 var bg;
 
+var grid;
+var initialized = false;
+var select = false;
+
 // Runs when the page is loading
 function preload() {
   bg = loadImage("./images/default.png");
@@ -21,21 +25,72 @@ function draw() {
   // Set the background iamge
   background(bg);
 
-  for (let x = 0; x < gridWidth; ++x) {
-    for (let y = 0; y < gridWidth; ++y) {
-      rect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
-    }
+  if (initialized) {
+    updateGrid();
+
+    drawGrid();
   }
 }
+
+// Enable cells
+function mousePressed() {
+  select = true;
+}
+
+// Disable cells
+function mouseReleased() {
+  select = false;
+}
+
+function updateGrid() {
+  var xPos = Math.floor(mouseX / cellWidth);
+  var yPos = Math.floor(mouseY / cellWidth);
+
+  console.log(select);  
+
+  if (xPos > 0 && xPos < gridWidth && yPos > 0 && yPos < gridWidth && select) {
+    grid[yPos][xPos] = true;  
+  }
+  
+}
+
 
 function updateGridData(a, b) {
   gridWidth = a;
   cellWidth = b;
+
+  initGrid();
 }
 
 function updateBackground(bg_link) {
     bg = loadImage(bg_link);
-    console.log(bg_link);
+}
+
+/**
+ * 
+ */
+function initGrid() {
+  grid = [];
+  for (let y = 0; y < gridWidth; ++y) {
+    grid[y] = [];
+    for (let x = 0; x < gridWidth; ++x) {
+      grid[y][x] = 0;
+    }
+  }
+  initialized = true;
+}
+
+function drawGrid() {
+  for (let y = 0; y < gridWidth; ++y) {
+    for (let x = 0; x < gridWidth; ++x) {
+      if (grid[y][x] == 0){
+        noFill();
+      } else {
+        fill(255, 0, 0, 100);
+      }
+      rect(x * cellWidth, y * cellWidth, cellWidth, cellWidth);
+    }
+  }
 }
 
 // [https://maps.googleapis.com/maps/api/staticmap?center=33.434129,-111.93277599999999&zoom=18&maptype=satellite&size=640x640&key=AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q] is correct, hosting the image online, or running a local server.[https://github.com/processing/p5.js/wiki/Local-server]
