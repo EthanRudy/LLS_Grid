@@ -29,6 +29,9 @@ var infowindow;   // Info window
 var marker1;      // North West Marker
 var marker2;      // South East Marker
 
+var rectangleLat = [];
+var rectangleLng = [];
+
 // Map options
 var mapOptions;   // Maps API tags
 
@@ -105,10 +108,11 @@ function initMap() {
   //makeGrid();
   var genButton = document.getElementById("grid_button");
   genButton.addEventListener("click", makeGrid);
+  var enButton = document.getElementById("enable_button");
+  var diButton = document.getElementById("disable_button");
+  enButton.addEventListener("click", setEnabled);
+  diButton.addEventListener("click", setDisabled);
 }
-
-var rectangleLat = [];
-var rectangleLng = [];
 
 function makeGrid() {
   // Reset for the new grid
@@ -132,7 +136,6 @@ function makeGrid() {
   var dividerLng = Math.abs(leftSideDist) * 40008000 / 360;
   dividerLat = Math.round(dividerLat / 5); // 5 Meters
   dividerLng = Math.round(dividerLng / 5); // 5 Meters
-  // console.log(dividerLat + " & " + dividerLng);
 
   var excLat = belowSideDist / dividerLat;
   var excLng = leftSideDist / dividerLng;
@@ -146,8 +149,6 @@ function makeGrid() {
   // Draw Grid
   for (var i = 0; i < dividerLat; i++) {
     if (rectangleLng[i] == null) rectangleLng[i] = [];
-
-    // console.log(i + " of " + dividerLat);
 
     for (var j = 0; j < dividerLng; j++) {
 
@@ -177,7 +178,6 @@ function makeGrid() {
 
   document.getElementById('left').value = leftSideDist;
   document.getElementById('bottom').value = belowSideDist;
-  //console.log(map.getZoom() + ": " + dividerLat);
 
   let meters_per_pixel = 156543.03392 * Math.cos(mapObject.getCenter().lat() * Math.PI / 180) / Math.pow(2, mapObject.getZoom());
   
@@ -186,9 +186,6 @@ function makeGrid() {
   let pixelsPerSquare = 640.0 / canvasGridDim;
 
   updateGridData(canvasGridDim, pixelsPerSquare);
-
-  //console.log(canvasGridDim);
-  //console.log(gridPix);
 
   toImage();
 }
@@ -263,7 +260,6 @@ function toRadians(degrees){
 }
 
 window.initMap = initMap;
-
 
 
 

@@ -6,6 +6,7 @@ var bg;
 var grid;
 var initialized = false;
 var select = false;
+var enabled = true;
 
 // Runs when the page is loading
 function preload() {
@@ -32,12 +33,12 @@ function draw() {
   }
 }
 
-// Enable cells
+// Enable draw
 function mousePressed() {
   select = true;
 }
 
-// Disable cells
+// Disable disable
 function mouseReleased() {
   select = false;
 }
@@ -46,10 +47,13 @@ function updateGrid() {
   var xPos = Math.floor(mouseX / cellWidth);
   var yPos = Math.floor(mouseY / cellWidth);
 
-  console.log(select);  
-
-  if (xPos > 0 && xPos < gridWidth && yPos > 0 && yPos < gridWidth && select) {
-    grid[yPos][xPos] = true;  
+  if (xPos >= 0 && xPos < gridWidth && yPos >= 0 && yPos < gridWidth && select) {
+    if (enabled) {
+      grid[yPos][xPos] = true;  
+    } else {
+      grid[yPos][xPos] = false;  
+    }
+    
   }
   
 }
@@ -64,6 +68,14 @@ function updateGridData(a, b) {
 
 function updateBackground(bg_link) {
     bg = loadImage(bg_link);
+}
+
+function setEnabled() {
+  enabled = true;
+}
+
+function setDisabled() {
+  enabled = false;
 }
 
 /**
