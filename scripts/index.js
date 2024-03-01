@@ -8,18 +8,12 @@ API KEY
 /**
  * TODO
  * 
- * Calculate the correct zoom amount 
- *  OR
- * Calculate cells per zoom level
+ * Adjust the error in grid coordinates
+ * Unordered graph and list pathfinding
  * 
- * The above options are used to calculate how many cells to put on the canvas
- * 
- * Transfer Image to the selection page
- * using the computed URL
- * 
- * Implement a p5js canvas with the transfered image & the # of cells needed
- * 
- * Port the draw code over to p5/processing
+ * Mockup:
+ *  - Scheduling
+ *  - Weather API
  */
 
 var mapObject;          // Map object
