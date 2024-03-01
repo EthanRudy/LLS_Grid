@@ -10,12 +10,16 @@ var initialized = false;
 var select = false;
 var enabled = true;
 
-// Runs when the page is loading
+/**
+ * Preload
+ */
 function preload() {
   bg = loadImage("./images/default.png");
 }
 
-// Runs once when the page is loaded
+/**
+ * Runs once on page load
+ */
 function setup() {
     createCanvas(640, 640);
     fill(0, 0, 0, 0);
@@ -23,7 +27,11 @@ function setup() {
     stroke(0, 0, 0);
 }
 
-// Runs like 30x a second
+/**
+ * Main draw loop
+ * 
+ * Runs ~30x a second
+ */
 function draw() {
   // Set the background iamge
   background(bg);
@@ -35,16 +43,21 @@ function draw() {
   }
 }
 
-// Enable draw
+// Enable mouse input
 function mousePressed() {
   select = true;
 }
 
-// Disable disable
+// Disable mouse input
 function mouseReleased() {
   select = false;
 }
 
+/**
+ * Update Grid
+ * 
+ * Updates the grid with the mouse input
+ */
 function updateGrid() {
   var xPos = Math.floor(mouseX / cellWidth);
   var yPos = Math.floor(mouseY / cellWidth);
@@ -60,7 +73,13 @@ function updateGrid() {
   
 }
 
-
+/**
+ * Update Grid Data
+ * 
+ * @param a Grid Width, dimensions of the grid
+ * @param b Cell Width, pixel dimensions of the cells
+ * 
+ */
 function updateGridData(a, b) {
   gridWidth = a;
   cellWidth = b;
@@ -68,20 +87,38 @@ function updateGridData(a, b) {
   initGrid();
 }
 
+/**
+ * Update Background
+ * 
+ * @param bg_link Link to the background
+ * 
+ */
 function updateBackground(bg_link) {
     bg = loadImage(bg_link);
 }
 
+/**
+ * Set Enabled
+ * 
+ * Triggers the grid to enabling cells
+ */
 function setEnabled() {
   enabled = true;
 }
 
+/**
+ * Set Disabled
+ * 
+ * Triggers the grid to disable cells
+ */
 function setDisabled() {
   enabled = false;
 }
 
 /**
+ * Initialize Grid
  * 
+ * Initializes a square, fully disabed grid
  */
 function initGrid() {
   grid = [];
@@ -94,6 +131,11 @@ function initGrid() {
   initialized = true;
 }
 
+/**
+ * Draw Grid
+ * 
+ * Draws the grid, transparent == disabled, translucent == enabled
+ */
 function drawGrid() {
   for (let y = 0; y < gridWidth; ++y) {
     for (let x = 0; x < gridWidth; ++x) {
@@ -106,5 +148,3 @@ function drawGrid() {
     }
   }
 }
-
-// [https://maps.googleapis.com/maps/api/staticmap?center=33.434129,-111.93277599999999&zoom=18&maptype=satellite&size=640x640&key=AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q] is correct, hosting the image online, or running a local server.[https://github.com/processing/p5.js/wiki/Local-server]

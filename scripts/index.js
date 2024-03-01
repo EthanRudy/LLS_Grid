@@ -207,7 +207,6 @@ function clearGrid(){
  * Exports the current map view and data 
  * and pipes it into an image tag
  */
-// https://developers.google.com/maps/documentation/maps-static/start
 function toImage() {
 
   // Get both the markers' position
@@ -225,7 +224,6 @@ function toImage() {
 
   // Set the current zoom of the map
   staticMapUrl += "&zoom=" + mapObject.getZoom();
-  // https://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds
 
   // Set the current visual mode of the map
   staticMapUrl += "&maptype=" + "satellite";
@@ -236,8 +234,6 @@ function toImage() {
   // Set the API key value
   staticMapUrl += "&key=" + "AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q";
 
-
-  // https://github.com/processing/p5.js/wiki/Embedding-p5.js
   // Set the background image
   updateBackground(staticMapUrl);
 }
