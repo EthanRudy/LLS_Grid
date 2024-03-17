@@ -112,6 +112,8 @@ function initMap() {
   var diButton = document.getElementById("disable_button");
   enButton.addEventListener("click", setEnabled);
   diButton.addEventListener("click", setDisabled);
+  var pathButton = document.getElementById("generate_path")
+  pathButton.addEventListener("click", generatePath);
 }
 
 function makeGrid() {
@@ -129,7 +131,7 @@ function makeGrid() {
 
   
 
-  // CHANGLE ALL OF THIS TO AUTO CALCULATE
+  // CHANGLE ALL OF THIS TO AUTO CALCULATE ~DONE~
   // https://stackoverflow.com/questions/3024404/transform-longitude-latitude-into-meters
   var circumAtLat = 40075160 * Math.cos(toRadians(m1Lat));
   var dividerLat = Math.abs(belowSideDist) * circumAtLat / 360;
