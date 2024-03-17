@@ -8,18 +8,12 @@ API KEY
 /**
  * TODO
  * 
- * Calculate the correct zoom amount 
- *  OR
- * Calculate cells per zoom level
+ * Adjust the error in grid coordinates
+ * Unordered graph and list pathfinding
  * 
- * The above options are used to calculate how many cells to put on the canvas
- * 
- * Transfer Image to the selection page
- * using the computed URL
- * 
- * Implement a p5js canvas with the transfered image & the # of cells needed
- * 
- * Port the draw code over to p5/processing
+ * Mockup:
+ *  - Scheduling
+ *  - Weather API
  */
 
 var mapObject;          // Map object
@@ -215,7 +209,6 @@ function clearGrid(){
  * Exports the current map view and data 
  * and pipes it into an image tag
  */
-// https://developers.google.com/maps/documentation/maps-static/start
 function toImage() {
 
   // Get both the markers' position
@@ -233,7 +226,6 @@ function toImage() {
 
   // Set the current zoom of the map
   staticMapUrl += "&zoom=" + mapObject.getZoom();
-  // https://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds
 
   // Set the current visual mode of the map
   staticMapUrl += "&maptype=" + "satellite";
@@ -244,8 +236,6 @@ function toImage() {
   // Set the API key value
   staticMapUrl += "&key=" + "AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q";
 
-
-  // https://github.com/processing/p5.js/wiki/Embedding-p5.js
   // Set the background image
   updateBackground(staticMapUrl);
 }
