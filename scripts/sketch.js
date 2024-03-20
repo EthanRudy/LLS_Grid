@@ -11,6 +11,7 @@ var path = [];
 var initialized = false;
 var select = false;
 var enabled = true;
+var index;
 
 /**
  * Preload
@@ -42,6 +43,28 @@ function draw() {
     updateGrid();
 
     drawGrid();
+    
+    let amt = 255.0 / path.length;
+    let c = 0;
+    if (path.length != 0) {
+      for (let i = 0; i < path.length - 1; ++i) {
+        let first = path[i];
+        let second = path[i + 1];
+
+        strokeWeight(5);
+        stroke(c);
+
+        line(
+          first[0] * cellWidth + cellWidth / 2, 
+          first[1] * cellWidth + cellWidth / 2,
+          second[0] * cellWidth + cellWidth / 2, 
+          second[1] * cellWidth + cellWidth / 2
+        );
+        c += amt;
+
+        stroke(0);
+      }
+    }
   }
 }
 
@@ -133,13 +156,36 @@ function generatePath() {
     }
   }
 
+  path = [];
+  index = 0;
+
   console.log(pathGrid);
 
+  let oldGrid = [];
+
+  for (let y = 0; y < gridWidth; ++y) {
+    oldGrid[y] = [];
+    for (let x = 0; x < gridWidth; ++x) {
+      oldGrid[y][x] = pathGrid[y][x];
+    }
+  }
+
   //print(point_x + ", " + point_y);
-  next_point = []
-  findPath(point_x, point_y);
+  findPath(point_x, point_y, false);
+
+  for (let y = 0; y < gridWidth; ++y) {
+    pathGrid[y] = [];
+    for (let x = 0; x < gridWidth; ++x) {
+      pathGrid[y][x] = oldGrid[y][x];
+    }
+  }
 
   console.log("Path Length: " + path.length);
+  pathString = "";
+  for (let i = 0; i < path.length && path.length != 0; ++i) {
+    pathString += "(" + path[i][0] + ", " + path[i][1] + ")\n";
+  }
+  console.log(pathString);
 }
 
 
@@ -147,50 +193,50 @@ function generatePath() {
 /**
  * This is really shit code, but its like 1 am after an 8 hour shift
  */
-function findPath(x, y) {
-  path.push([x, y]);    // Push the spot we are on
-  pathGrid[y][x] = 1;    // Path the spot as visited
+function findPath(x, y, backtrack) {
+  // Append the current grid cell to the path list
+  path.push([x, y]);
+  pathGrid[y][x] = 1;
 
-  console.log(x + ", " + y);
+  //console.log(x + ", " + y);
+  if (!backtrack) { ++index; }
 
-  // Left Side
-  if (x > 0) {
-    if (pathGrid[y][x - 1] == 0) {
-      print("left");
-      findPath(x - 1, y);
-    }
+  // Right Cell
+  if (x < gridWidth && pathGrid[y][x + 1] == 0) {
+    // In bounds and not visited
+    findPath(x + 1, y, false);
   }
 
-  // Top Side
-  else if (y > 0) {
-    if (pathGrid[y - 1][x] == 0) {
-      print("top");
-      findPath(x, y - 1);
-    }
+  // Left Cell
+  if (x > 0 && pathGrid[y][x - 1] == 0) {
+    // In bounds and not visited
+    findPath(x - 1, y, false);
   }
 
-  // Right Side
-  else if (x < gridWidth - 1) {
-    if (pathGrid[y][x + 1] == 0) {
-      print("right");
-      findPath(x + 1, y);
-    }
+  // Bottom Cell
+  if (y < gridWidth && pathGrid[y + 1][x] == 0) {
+    findPath(x, y + 1, false);
   }
 
-  // Bottom Side
-  else if (y < gridWidth - 1) {
-    if (pathGrid[y + 1][x] == 0) {
-      print("bottom");
-      findPath(x, y + 1);
-    }
-  } 
-  // No immediate path found
-  else {
-    print("backtrack")
-    // Loop back down path and check edges
-    var new_point = pathGrid[pathGrid.length - 1];
-    findPath(new_point[0], new_point[1]);
+  // Top Cell
+  if (y > 0 && pathGrid[y - 1][x] == 0) {
+    findPath(x, y - 1, false);
   }
+
+  if (!checkPathGrid() && index > 0) {
+    --index;
+    findPath(path[index][0], path[index][1], true);
+  }
+  
+}
+
+function checkPathGrid() {
+  for (let y = 0; y < gridWidth; ++y) {
+    for (let x = 0; x < gridWidth; ++x) {
+      if (pathGrid[y][x] == 0) { return false; }
+    }
+  }
+  return true;
 }
 
 /**
@@ -219,6 +265,9 @@ function initGrid() {
  * Draws the grid, transparent == disabled, translucent == enabled
  */
 function drawGrid() {
+
+  strokeWeight(1);
+
   for (let y = 0; y < gridWidth; ++y) {
     for (let x = 0; x < gridWidth; ++x) {
       if (grid[y][x] == 0){
