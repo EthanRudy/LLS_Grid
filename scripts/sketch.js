@@ -171,7 +171,7 @@ function generatePath() {
   }
 
   //print(point_x + ", " + point_y);
-  findPath(point_x, point_y, false);
+  findPath(point_x, point_y);
 
   for (let y = 0; y < gridWidth; ++y) {
     pathGrid[y] = [];
@@ -193,44 +193,51 @@ function generatePath() {
 /**
  * This is really shit code, but its like 1 am after an 8 hour shift
  */
-function findPath(x, y, backtrack) {
-  // Append the current grid cell to the path list
+function findPath(x, y) {
+  // If the grid is complted, stop calling
+  if (checkGrid()) { return; }
+
+  print(x + ", " + y + "\n");
+
+  if (path.length > 1) {
+    let back = path.length - 1
+    let dist = abs(path[back][0] - x) + abs(path[back][1] - y);
+    let toCopy = back;
+    while (dist > 1) {
+        --toCopy;
+        path.push(path[toCopy]);
+        ++back;
+        dist = abs(path[back][0] - x) + abs(path[back][1] - y);
+    }
+  }
+
+
   path.push([x, y]);
+
   pathGrid[y][x] = 1;
 
-  //console.log(x + ", " + y);
-  if (!backtrack) { ++index; }
-
-  // Right Cell
+  // Right Path
   if (x < gridWidth && pathGrid[y][x + 1] == 0) {
-    // In bounds and not visited
-    findPath(x + 1, y, false);
+      findPath(x + 1, y);
   }
 
-  // Left Cell
+  // Left Path
   if (x > 0 && pathGrid[y][x - 1] == 0) {
-    // In bounds and not visited
-    findPath(x - 1, y, false);
+      findPath(x - 1, y);
   }
 
-  // Bottom Cell
+  // Down Path
   if (y < gridWidth && pathGrid[y + 1][x] == 0) {
-    findPath(x, y + 1, false);
+      findPath(x, y + 1);
   }
 
-  // Top Cell
+  // Up Path
   if (y > 0 && pathGrid[y - 1][x] == 0) {
-    findPath(x, y - 1, false);
+      findPath(x, y - 1);
   }
-
-  if (!checkPathGrid() && index > 0) {
-    --index;
-    findPath(path[index][0], path[index][1], true);
-  }
-  
 }
 
-function checkPathGrid() {
+function checkGrid() {
   for (let y = 0; y < gridWidth; ++y) {
     for (let x = 0; x < gridWidth; ++x) {
       if (pathGrid[y][x] == 0) { return false; }
