@@ -1,9 +1,3 @@
-/*
-API KEY
-  https://console.cloud.google.com/google/maps-apis/credentials?utm_source=Docs_CreateAPIKey&utm_content=Docs_tile&project=modular-rex-411620
-
-  AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q
-*/
 
 /**
  * OKAY READ THIS
@@ -238,7 +232,7 @@ function toImage() {
   staticMapUrl += "&size=640x640";
 
   // Set the API key value
-  staticMapUrl += "&key=" + "AIzaSyBMXidTHFP4iLQDGxo34ODeXp7dMn6869Q";
+  staticMapUrl += "&key=" + "API_KEY";
 
   // Set the background image (pipe to sketh.js)
   updateBackground(staticMapUrl);
